@@ -1,6 +1,7 @@
 import redis
+import os
 
-r = redis.StrictRedis(host='localhost', port=6379, password='', db=0, charset="utf-8", decode_responses=True)
+r = redis.from_url(os.environ['REDIS_URL'], charset="utf-8", decode_responses=True)
 
 
 def create_tweet() :

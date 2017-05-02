@@ -41,7 +41,7 @@ def get_user(user_name):
     for key in r.scan_iter():
 
         if r.type(key) == 'hash' and r.hget(key, 'name') == user_name :
-            print(r.hget(key, 'message') + ' : ' + r.hget(key, 'message'))
+            print(r.hget(key, 'datetime') + ' : ' + r.hget(key, 'message'))
             found = True
 
     if not found:

@@ -1,0 +1,1 @@
+This is a tweeter like project in python that uses a redis db

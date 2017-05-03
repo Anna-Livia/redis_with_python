@@ -5,24 +5,22 @@ import datetime
 r = redis.from_url(os.environ['REDIS_URL'], charset="utf-8", decode_responses=True)
 
 
-def create_tweet() :
-    input_name = input("Enter your name: ")
-
+def create_tweet(name):
     input_message = input("Enter your message: ")
 
-    counter_user = r.get('counter')
-    print("Counter is : " + counter_user)
     r.incr('counter')
-
+    counter_user = r.get('counter')
     message_id = 'mid:' + str(counter_user)
+
     d = datetime.datetime.now()
-    print("message id is : " + message_id)
-    r.hset(message_id, 'name', input_name)
+
+    r.hset(message_id, 'name', name)
     r.hset(message_id, 'message', input_message)
     r.hset(message_id, 'datetime', str(d))
-    r.bgsave()
-
-    print(r.hgetall(message_id))
+    try :
+        r.bgsave()
+    except ResponseError :
+        pass
 
 
 def get_all_tweet() :
@@ -31,8 +29,7 @@ def get_all_tweet() :
         if r.type(key) == 'string':
             pass
         else:
-            print(str(r.hget(key, 'name')) + ' : ' + str(r.hgetall(key)))
-
+            print(str(r.hget(key, 'datetime')) + "-" + str(r.hget(key, 'name')) + ' : ' + str(r.hget(key, 'message')))
 
 
 def get_user(user_name):
@@ -40,20 +37,25 @@ def get_user(user_name):
 
     for key in r.scan_iter():
 
-        if r.type(key) == 'hash' and r.hget(key, 'name') == user_name :
-            print(r.hget(key, 'datetime') + ' : ' + r.hget(key, 'message'))
+        if r.type(key) == 'hash' and r.hget(key, 'name') == user_name:
             found = True
+            print(r.hget(key, 'datetime') + ' : ' + r.hget(key, 'message'))
+
 
     if not found:
         print("user does not exist")
 
-while True :
+
+name = input("What is your name ?")
+
+while True:
     interface = input("to create, enter c to read, enter r or enter user name, q to quit  ")
     if interface == 'c':
-        create_tweet()
+        create_tweet(name)
     elif interface == 'r':
         get_all_tweet()
-    elif interface == 'q' :
+    elif interface == 'q':
         break
     else:
         get_user(interface)
+

@@ -1,8 +1,6 @@
-import redis
-import os
 import hashes
 
-r = redis.from_url(os.environ['REDIS_URL'], charset="utf-8", decode_responses=True)
+
 
 name_undefined = True
 print("")

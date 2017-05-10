@@ -1,8 +1,6 @@
 import hashes
 import redis
 import os
-import datetime
-
 
 r = redis.from_url(os.environ['REDIS_URL'], charset="utf-8", decode_responses=True)
 

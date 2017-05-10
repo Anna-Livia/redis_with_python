@@ -4,7 +4,6 @@ import re
 import datetime
 
 
-
 r = redis.from_url(os.environ['REDIS_URL'], charset="utf-8", decode_responses=True)
 
 
@@ -114,3 +113,6 @@ def check_user_password(a,b) :
         return True
     else:
         return False
+
+def set_user_password(given_name, password) :
+    r.hset('users', given_name, password)

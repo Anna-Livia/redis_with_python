@@ -32,7 +32,7 @@ while name_undefined :
                 if is_name_correct == 'n' :
                     name_undefined = True
             else :
-                r.hset('users', given_name, password)
+                hashes.set_user_password(given_name, password)
         else :
             not_auth = True
             while not_auth :
@@ -85,4 +85,5 @@ while True:
             hashes.print_tweets(res)
         else :
             print("this user does not exist")
+
 

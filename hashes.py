@@ -3,8 +3,8 @@ import os
 import re
 import datetime
 
-
-r = redis.from_url(os.environ['REDIS_URL'], charset="utf-8", decode_responses=True)
+REDIS_URL = 'http://localhost:6379'
+r = redis.from_url(REDIS_URL, charset="utf-8", decode_responses=True)
 
 
 def get_all_keys():
